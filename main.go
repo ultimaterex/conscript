@@ -18,6 +18,7 @@ const (
 	pathHealth       = "/health"
 	pathContainers   = "/containers"
 	getContainerPath = "/container/"
+	getContainerHealthPath = getContainerPath + "health/"
 )
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
@@ -41,6 +42,7 @@ func main() {
 
 	mux.HandleFunc(pathContainers, listContainers)
 	mux.HandleFunc(getContainerPath, getContainer(getContainerPath))
+	mux.HandleFunc(getContainerHealthPath, getContainerHealth(getContainerHealthPath))
 
 	ctx, cancelCtx := context.WithCancel(context.Background())
 	// configServer := &http.Server{

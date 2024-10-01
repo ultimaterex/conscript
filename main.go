@@ -10,7 +10,7 @@ import (
 )
 
 type contextKey string
-const appVersion string = "0.1.0"
+const appVersion string = "0.1.1"
 const keyServerAddress contextKey = "server_address"
 
 const (
@@ -45,13 +45,6 @@ func main() {
 	mux.HandleFunc(getContainerHealthPath, getContainerHealth(getContainerHealthPath))
 
 	ctx, cancelCtx := context.WithCancel(context.Background())
-	// configServer := &http.Server{
-	// 	Addr:    ":3332",
-	// 	Handler: mux,
-	// 	BaseContext: func(listener net.Listener) context.Context {
-	// 		return context.WithValue(ctx, keyServerAddress, listener.Addr().String())
-	// 	},
-	// }
 
 	healthServer := &http.Server{
 		Addr:    ":3333",
@@ -60,16 +53,6 @@ func main() {
 			return context.WithValue(ctx, keyServerAddress, listener.Addr().String())
 		},
 	}
-
-	// go func() {
-	// 	err := configServer.ListenAndServe()
-	// 	if errors.Is(err, http.ErrServerClosed) {
-	// 		fmt.Printf("config server closed\n")
-	// 	} else if err != nil {
-	// 		fmt.Printf("error listening for server one: %s\n", err)
-	// 	}
-	// 	cancelCtx()
-	// }()
 
 	go func() {
 		err := healthServer.ListenAndServe()

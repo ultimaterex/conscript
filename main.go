@@ -10,14 +10,14 @@ import (
 )
 
 type contextKey string
-
+const appVersion string = "0.1.0"
 const keyServerAddress contextKey = "server_address"
 
 const (
-	pathRoot         = "/"
-	pathHealth       = "/health"
-	pathContainers   = "/containers"
-	getContainerPath = "/container/"
+	pathRoot               = "/"
+	pathHealth             = "/health"
+	pathContainers         = "/containers"
+	getContainerPath       = "/container/"
 	getContainerHealthPath = getContainerPath + "health/"
 )
 
@@ -25,7 +25,7 @@ func getRoot(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	fmt.Printf("%s: got / request\n", ctx.Value(keyServerAddress))
-	io.WriteString(w, "Conscript alpha\n")
+	io.WriteString(w, fmt.Sprintf("Conscript version %s\n", appVersion))
 }
 
 func getHealth(w http.ResponseWriter, r *http.Request) {

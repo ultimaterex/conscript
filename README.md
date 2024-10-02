@@ -17,7 +17,11 @@ Conscript is a Go-based HTTP server that provides various read only endpoints to
 **Run the Docker container**:
 
 ```sh
-docker run -d -p 3333:3333 -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/ultimaterex/conscript/conscript:latest
+docker run -d \
+  -p 3333:3333 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /etc/hostname:/etc/host_hostname \ # Optional, mount if you want machine_hostname to be available when running in docker environments
+  ghcr.io/ultimaterex/conscript/conscript:latest
 ```
 
 ### Running with Docker Compose
@@ -37,6 +41,7 @@ docker run -d -p 3333:3333 -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/
        restart: 'unless-stopped'
        volumes:
          - '/var/run/docker.sock:/var/run/docker.sock'
+         - "/etc/hostname:/etc/host_hostname" # Optional, mount if you want machine_hostname to be available when running in docker environments
        working_dir: '/root'
    ```
 

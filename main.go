@@ -16,7 +16,7 @@ import (
 
 type contextKey string
 
-const appVersion string = "0.1.2"
+const appVersion string = "0.1.3"
 const keyServerAddress contextKey = "server_address"
 
 var startTime = time.Now()

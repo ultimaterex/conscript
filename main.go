@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -46,6 +47,7 @@ func getHealth(w http.ResponseWriter, r *http.Request) {
 type Info struct {
 	ApplicationVersion string `json:"application_version"`
 	Hostname           string `json:"hostname"`
+	MachineHostname    string `json:"machine_hostname"`
 	Uptime             string `json:"uptime"`
 	CurrentTime        string `json:"current_time"`
 	GoVersion          string `json:"go_version"`
@@ -61,17 +63,23 @@ func getInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+    machineHostname := "Not available"
+    if data, err := os.ReadFile("/etc/host_hostname"); err == nil {
+        machineHostname = strings.TrimSpace(string(data))
+    }
+
 	uptime := time.Since(startTime).String()
 	currentTime := time.Now().Format(time.RFC1123)
 	goVersion := runtime.Version()
 
-	info := Info{
-		ApplicationVersion: appVersion,
-		Hostname:           hostname,
-		Uptime:             uptime,
-		CurrentTime:        currentTime,
-		GoVersion:          goVersion,
-	}
+    info := Info{
+        ApplicationVersion: appVersion,
+        Hostname:           hostname,
+        MachineHostname:    strings.TrimSpace(string(machineHostname)),
+        Uptime:             uptime,
+        CurrentTime:        currentTime,
+        GoVersion:          goVersion,
+    }
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(info); err != nil {

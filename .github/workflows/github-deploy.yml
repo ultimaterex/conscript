@@ -51,9 +51,9 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/${{ github.repository }}/conscript:latest
-            ghcr.io/${{ github.repository }}/conscript:${{ env.VERSION }}
-            ghcr.io/${{ github.repository }}/conscript:${{ github.sha }}
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ env.VERSION }}
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
           build-args: |
             VERSION=${{ env.VERSION }}
 
